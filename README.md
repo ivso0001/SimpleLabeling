@@ -1,7 +1,7 @@
 Simple Labeling
 ===============
 
-It is a project to help with labeling work for machine learning.
+This is a project to help with labeling.
 
 #### Screenshot
 ![Label Tool](./images/img.png)
