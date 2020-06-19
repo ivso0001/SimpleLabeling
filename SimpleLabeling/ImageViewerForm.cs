@@ -38,7 +38,7 @@ namespace SimpleLabeling
             {
                 foreach (Data data in dataList)
                 {
-                    file.WriteLine(data.File + "," + data.X1 + "," + data.X2 + "," + data.Y1 + "," + data.Y2);
+                    file.WriteLine(data.File + ", " + data.X1 + ", " + data.X2 + ", " + data.Y1 + ", " + data.Y2);
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace SimpleLabeling
                 string[] texts = File.ReadAllLines(@fileInfo.ToString());
                 foreach (string text in texts)
                 {
-                    string[] datas = text.Split(',');
+                    string[] datas = text.Replace(", ", ",").Split(',');
                     if (datas.Length == 5)
                     {
                         dataList.Add(new Data(datas[0], Int32.Parse(datas[1]) , Int32.Parse(datas[2]), Int32.Parse(datas[3]), Int32.Parse(datas[4])));
@@ -70,11 +70,18 @@ namespace SimpleLabeling
 
         private void UpdateForm()
         {
-            pictureBox1.Load(files[currentIndex]);
-            pictureBox1.Size = new Size(pictureBox1.Image.Width, pictureBox1.Image.Height);
-            Size = new Size(pictureBox1.Width, pictureBox1.Height);
-            grp = pictureBox1.CreateGraphics();
-            DrawRectangles();
+            try
+            {
+                pictureBox1.Load(files[currentIndex]);
+                pictureBox1.Size = new Size(pictureBox1.Image.Width, pictureBox1.Image.Height);
+                Size = new Size(pictureBox1.Width, pictureBox1.Height);
+                grp = pictureBox1.CreateGraphics();
+                DrawRectangles();
+            }
+            catch(ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public void MoveFile(int index)
