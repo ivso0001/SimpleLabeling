@@ -13,7 +13,6 @@ namespace SimpleLabeling
 
         private Point startPos;
         private Point currentPos;
-        private Graphics grp;
         private List<Data> dataList;
 
         private int currentIndex;
@@ -58,7 +57,7 @@ namespace SimpleLabeling
                         dataList.Add(new Data(datas[0], Int32.Parse(datas[1]) , Int32.Parse(datas[2]), Int32.Parse(datas[3]), Int32.Parse(datas[4])));
                     }
                 }
-                DrawRectangles();
+                pictureBox1.Refresh();
             }
         }
 
@@ -75,8 +74,7 @@ namespace SimpleLabeling
                 pictureBox1.Load(files[currentIndex]);
                 pictureBox1.Size = new Size(pictureBox1.Image.Width, pictureBox1.Image.Height);
                 Size = new Size(pictureBox1.Width, pictureBox1.Height);
-                grp = pictureBox1.CreateGraphics();
-                DrawRectangles();
+                pictureBox1.Refresh();
             }
             catch(ArgumentException e)
             {
@@ -114,16 +112,33 @@ namespace SimpleLabeling
             }
         }
 
-        private void DrawRectangles()
+        private void Draws(Graphics graphics)
         {
-            pictureBox1.Refresh();
+            DrawRectangles(graphics);
+            if(!drawing) DrawLines(graphics);
+            if (drawing) DrawRectangle(graphics);
+        }
+
+        private void DrawRectangles(Graphics graphics)
+        {
             foreach (Data data in dataList)
             {
                 if (data.File == files[currentIndex])
                 {
-                    grp.DrawRectangle(Pens.Aqua, getRectangle(data.X1, data.X2, data.Y1, data.Y2));
+                    graphics.DrawRectangle(Pens.Aqua, getRectangle(data.X1, data.X2, data.Y1, data.Y2));
                 }
             }
+        }
+
+        private void DrawRectangle(Graphics graphics)
+        {
+            graphics.DrawRectangle(Pens.Red, getRectangle(startPos.X, currentPos.X, startPos.Y, currentPos.Y));
+        }
+
+        private void DrawLines(Graphics graphics)
+        {
+            graphics.DrawLine(Pens.Red, currentPos.X, 0, currentPos.X, pictureBox1.Image.Height);
+            graphics.DrawLine(Pens.Red, 0, currentPos.Y, pictureBox1.Image.Width, currentPos.Y);
         }
 
         private Rectangle getRectangle(int x1, int x2, int y1, int y2)
@@ -154,7 +169,7 @@ namespace SimpleLabeling
                         if (end != -1)
                         {
                             dataList.RemoveAt(end);
-                            DrawRectangles();
+                            pictureBox1.Refresh();
                         }
                     }
                     break;
@@ -164,11 +179,7 @@ namespace SimpleLabeling
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             currentPos = e.Location;
-            if (drawing)
-            {
-                pictureBox1.Refresh();
-                grp.DrawRectangle(Pens.Red, getRectangle(startPos.X, currentPos.X, startPos.Y, currentPos.Y));
-            }
+            pictureBox1.Refresh();
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -177,7 +188,7 @@ namespace SimpleLabeling
             {
                 drawing = false;
                 dataList.Add(new Data(files[currentIndex], startPos.X, currentPos.X, startPos.Y, currentPos.Y));
-                DrawRectangles();
+                pictureBox1.Refresh();
             }
         }
 
@@ -192,6 +203,11 @@ namespace SimpleLabeling
                     NextFile();
                     break;
             }
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            Draws(e.Graphics);
         }
     }
 }
