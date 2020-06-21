@@ -33,7 +33,7 @@ namespace SimpleLabeling
 
         public void Save()
         {
-            using (StreamWriter file = new StreamWriter(CSV_PATH))
+            using (StreamWriter file = new StreamWriter(CSV_PATH.Replace(".", DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString()+".")))
             {
                 foreach (Data data in dataList)
                 {
