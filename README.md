@@ -27,4 +27,4 @@ Use the arrow keys to move to the next or previous image.
 
 CSV Format
 ----------
-FILE_PATH, x1, x2, y1, y2
+FILE_PATH, X1, Y1, X2, Y2

@@ -33,11 +33,11 @@ namespace SimpleLabeling
 
         public void Save()
         {
-            using (StreamWriter file = new StreamWriter(CSV_PATH.Replace(".", DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString()+".")))
+            using (StreamWriter file = new StreamWriter(CSV_PATH.Replace(".", DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString() + ".")))
             {
                 foreach (Data data in dataList)
                 {
-                    file.WriteLine(data.File + ", " + data.X1 + ", " + data.X2 + ", " + data.Y1 + ", " + data.Y2);
+                    file.WriteLine(data.File + ", " + data.X1 + ", " + data.Y1 + ", " + data.X2 + ", " + data.Y2);
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace SimpleLabeling
                     string[] datas = text.Replace(", ", ",").Split(',');
                     if (datas.Length == 5)
                     {
-                        dataList.Add(new Data(datas[0], Int32.Parse(datas[1]) , Int32.Parse(datas[2]), Int32.Parse(datas[3]), Int32.Parse(datas[4])));
+                        dataList.Add(new Data(datas[0], Int32.Parse(datas[1]), Int32.Parse(datas[2]), Int32.Parse(datas[3]), Int32.Parse(datas[4])));
                     }
                 }
                 pictureBox1.Refresh();
@@ -71,12 +71,13 @@ namespace SimpleLabeling
         {
             try
             {
+                Text = files[currentIndex].Split('\\')[files[currentIndex].Split('\\').Length - 1];
                 pictureBox1.Load(files[currentIndex]);
                 pictureBox1.Size = new Size(pictureBox1.Image.Width, pictureBox1.Image.Height);
                 Size = new Size(pictureBox1.Width, pictureBox1.Height);
                 pictureBox1.Refresh();
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -115,7 +116,7 @@ namespace SimpleLabeling
         private void Draw(Graphics graphics)
         {
             DrawRectangles(graphics);
-            if(!drawing) DrawLines(graphics);
+            if (!drawing) DrawLines(graphics);
             if (drawing) DrawRectangle(graphics);
         }
 
@@ -187,7 +188,7 @@ namespace SimpleLabeling
             if (drawing)
             {
                 drawing = false;
-                dataList.Add(new Data(files[currentIndex], startPos.X, currentPos.X, startPos.Y, currentPos.Y));
+                dataList.Add(new Data(files[currentIndex], startPos.X, startPos.Y, currentPos.X, currentPos.Y));
                 pictureBox1.Refresh();
             }
         }
