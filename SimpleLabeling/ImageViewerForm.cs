@@ -112,7 +112,7 @@ namespace SimpleLabeling
             }
         }
 
-        private void Draws(Graphics graphics)
+        private void Draw(Graphics graphics)
         {
             DrawRectangles(graphics);
             if(!drawing) DrawLines(graphics);
@@ -207,7 +207,7 @@ namespace SimpleLabeling
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            Draws(e.Graphics);
+            Draw(e.Graphics);
         }
     }
 }

@@ -19,6 +19,7 @@ namespace SimpleLabeling
         {
             trackBar1.Maximum = files.Length - 1;
 
+            if (imageViewerForm != null) imageViewerForm.Close();
             imageViewerForm = new ImageViewerForm(files);
             imageViewerForm.Show();
             imageViewerForm.Location = new Point(Location.X + Size.Width, Location.Y);
